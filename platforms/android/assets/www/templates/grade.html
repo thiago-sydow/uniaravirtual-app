@@ -1,0 +1,41 @@
+<ion-view view-title="{{grade.name}}">
+  <ion-content>
+    <ul class="list">
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.first_bimester)"></i></p>
+        <p class="col col-50 grade-text">1º Bimestre</p>
+        <p class="col grade-text">{{grade.first_bimester}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.second_bimester)"></i></p>
+        <p class="col col-50 grade-text">2º Bimestre</p>
+        <p class="col grade-text">{{grade.second_bimester}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.third_bimester)"></i></p>
+        <p class="col col-50 grade-text">3º Bimestre</p>
+        <p class="col grade-text">{{grade.third_bimester}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.fourth_bimester)"></i></p>
+        <p class="col col-50 grade-text">4º Bimestre</p>
+        <p class="col grade-text">{{grade.fourth_bimester}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.substitutive)"></i></p>
+        <p class="col col-50 grade-text">Substitutiva</p>
+        <p class="col grade-text">{{grade.substitutive}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.average)"></i></p>
+        <p class="col col-50 grade-text">Média</p>
+        <p class="col grade-text">{{grade.average}}</p>
+      </li>
+      <li class="item row">
+        <p class="col text-center"><i class="icon grade-icon" ng-class="iconForGrade(grade.recovery)"></i></p>
+        <p class="col col-50 grade-text">Ciclo Recuperação</p>
+        <p class="col grade-text">{{grade.recovery}}</p>
+      </li>
+    </ul>
+  </ion-content>
+</ion-view>

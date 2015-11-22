@@ -1,0 +1,19 @@
+<ion-view view-title="Login">
+  <ion-content>
+    <form ng-submit="doLogin()">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">RA</span>
+          <input type="text" placeholder="RA" ng-model="loginData.ra">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">RA</span>
+          <input type="password" ng-model="loginData.password" placeholder="Senha">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Entrar</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
