@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.uniaravirtualapp348425"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.uniaravirtualapp348425"
         },

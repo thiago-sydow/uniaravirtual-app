@@ -43,8 +43,13 @@ angular.module('starter.controllers', [])
   });
 
   $scope.iconForGrade = function(grade) {
-    var grade = parseFloat(grade.replace(',', '.'));
     var classes = '';
+
+    if (grade === undefined) {
+      return classes;
+    }
+
+    var grade = parseFloat(grade.replace(',', '.'));
 
     if (isNaN(grade)) {
       classes = 'hide';
@@ -75,6 +80,7 @@ angular.module('starter.controllers', [])
 
     $http.post('https://uniara-virtual-api.herokuapp.com/login', dataString, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function(resp) {
       $localstorage.set('token', resp.data);
+      $state.go("app.grades");
     }, function(err) {
       console.error('ERR', err);
     });
