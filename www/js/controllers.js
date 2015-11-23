@@ -63,6 +63,7 @@ angular.module('starter.controllers', [])
       if ($localstorage.get('profile') == undefined) {
         $http.get('https://uniara-virtual-api.herokuapp.com/student', { headers: { 'Authorization': $localstorage.getObject('token').value } }).then(function(resp) {
           $localstorage.setObject('profile', resp.data);
+          $scope.profile = resp.data
         });
       }
       $scope.profile = $localstorage.getObject('profile');
