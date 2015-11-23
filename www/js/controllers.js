@@ -27,6 +27,7 @@ angular.module('starter.controllers', [])
 
 })
 
+
 .controller('GradeCtrl', function($scope, $stateParams, $localstorage) {
   $scope.$on('$ionicView.enter', function(e) {
     $scope.grade = $localstorage.getObject('grades-' + $stateParams.gradeId);
@@ -53,6 +54,29 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('HomeCtrl', function($scope, $http, $localstorage, $state) {
+
+  $scope.$on('$ionicView.enter', function(e) {
+
+    //TODO we will refactor to move all this token check to a specific method.. wait for it.....
+    if ($localstorage.getObject('token').expires > Date.now()) {
+      if ($localstorage.getObject('profile') == undefined) {
+        $http.get('https://uniara-virtual-api.herokuapp.com/student', { headers: { 'Authorization': $localstorage.getObject('token').value } }).then(function(resp) {
+          $localstorage.setObject('profile', resp.data);
+        });
+      }
+      $scope.profile = $localstorage.getObject('profile');
+    } else {
+      $localstorage.remove('token');
+      $localstorage.remove('profile');
+      alert('Sua sessão expirou. Por favor faça login novamente.');
+      $state.go("app.login");
+    }
+
+  });
+
+})
+
 .controller('LoginCtrl', function($scope, $http, $localstorage, $state, $ionicLoading){
 
   // Form data for the login modal
@@ -60,7 +84,7 @@ angular.module('starter.controllers', [])
 
   $scope.$on('$ionicView.enter', function(e) {
     if ($localstorage.get('token') !== undefined) {
-      $state.go("app.grades");
+      $state.go("app.home");
     }
   });
 
@@ -82,6 +106,7 @@ angular.module('starter.controllers', [])
 
         if (grades.length == 0){ //TODO fix when response is 401 instead empty response
           $localstorage.remove('token');
+          $localstorage.remove('profile');
           alert('Sua sessão expirou. Por favor faça login novamente.');
           $state.go("app.login");
         }
@@ -96,7 +121,7 @@ angular.module('starter.controllers', [])
 
         $ionicLoading.hide();
 
-        $state.go("app.grades");
+        $state.go("app.home");
       }, function(err) {
         $ionicLoading.hide();
         alert('Ocorreu um erro ao realizar o login. Por favor tente novamente.')
