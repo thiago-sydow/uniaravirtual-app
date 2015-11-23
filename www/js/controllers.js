@@ -11,28 +11,18 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('GradesCtrl', function($scope, $http, $localstorage, $state) {
+.controller('GradesCtrl', function($scope, $localstorage, $state) {
 
   $scope.$on('$ionicView.enter', function(e) {
-    $http.get('https://uniara-virtual-api.herokuapp.com/grades', { headers: { 'Authorization': $localstorage.get('token') } }).then(function(resp) {
-      var grades = resp.data;
 
-      if (grades.length == 0){ //TODO fix when response is 401 instead empty response
-        $localstorage.remove('token');
-        alert('Sua sessão expirou. Por favor faça login novamente.');
-        $state.go("app.login");
-      }
+    if ($localstorage.getObject('token').expires > Date.now()) {
+      $scope.grades = $localstorage.getObject('grades');
+    } else {
+      $localstorage.remove('token');
+      alert('Sua sessão expirou. Por favor faça login novamente.');
+      $state.go("app.login");
+    }
 
-      for (var idx in grades) {
-        var grade = resp.data[idx];
-        grade.id = idx;
-        $localstorage.setObject('grades-' + grade.id, grade);
-      }
-
-      $scope.grades = grades;
-    }, function(err) {
-      console.error('ERR', err);
-    });
   });
 
 })
@@ -63,7 +53,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('LoginCtrl', function($scope, $http, $localstorage, $state){
+.controller('LoginCtrl', function($scope, $http, $localstorage, $state, $ionicLoading){
 
   // Form data for the login modal
   $scope.loginData = {};
@@ -78,10 +68,44 @@ angular.module('starter.controllers', [])
   $scope.doLogin = function() {
     var dataString = 'ra=' + $scope.loginData.ra + '&password=' + $scope.loginData.password;
 
+    $ionicLoading.show({
+      template: 'Entrando...'
+    });
+
     $http.post('https://uniara-virtual-api.herokuapp.com/login', dataString, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function(resp) {
-      $localstorage.set('token', resp.data);
-      $state.go("app.grades");
+      var expires = Date.now() + (30*60*60*1000); // Now + 30 minutes
+
+      $localstorage.setObject('token', { value: resp.data, expires: expires });
+
+      $http.get('https://uniara-virtual-api.herokuapp.com/grades', { headers: { 'Authorization': $localstorage.getObject('token').value } }).then(function(resp) {
+        var grades = resp.data;
+
+        if (grades.length == 0){ //TODO fix when response is 401 instead empty response
+          $localstorage.remove('token');
+          alert('Sua sessão expirou. Por favor faça login novamente.');
+          $state.go("app.login");
+        }
+
+        for (var idx in grades) {
+          var grade = resp.data[idx];
+          grade.id = idx;
+          $localstorage.setObject('grades-' + grade.id, grade);
+        }
+
+        $localstorage.setObject('grades', grades);
+
+        $ionicLoading.hide();
+
+        $state.go("app.grades");
+      }, function(err) {
+        $ionicLoading.hide();
+        alert('Ocorreu um erro ao tentar entrar. Por favor tente novamente.')
+        console.error('ERR', err);
+      });
+
     }, function(err) {
+      $ionicLoading.hide();
+      alert('Ocorreu um erro ao tentar entrar. Por favor tente novamente.')
       console.error('ERR', err);
     });
 
