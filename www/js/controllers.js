@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
     var dataString = 'ra=' + $scope.loginData.ra + '&password=' + $scope.loginData.password;
 
     $ionicLoading.show({
-      template: 'Entrando...'
+      template: 'Realizando login...'
     });
 
     $http.post('https://uniara-virtual-api.herokuapp.com/login', dataString, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function(resp) {
@@ -99,13 +99,13 @@ angular.module('starter.controllers', [])
         $state.go("app.grades");
       }, function(err) {
         $ionicLoading.hide();
-        alert('Ocorreu um erro ao tentar entrar. Por favor tente novamente.')
+        alert('Ocorreu um erro ao realizar o login. Por favor tente novamente.')
         console.error('ERR', err);
       });
 
     }, function(err) {
       $ionicLoading.hide();
-      alert('Ocorreu um erro ao tentar entrar. Por favor tente novamente.')
+      alert('Ocorreu um erro ao realizar o login. Por favor tente novamente.')
       console.error('ERR', err);
     });
 
