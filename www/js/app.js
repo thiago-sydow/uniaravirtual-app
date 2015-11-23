@@ -20,6 +20,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.utils'])
       StatusBar.styleDefault();
     }
   });
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

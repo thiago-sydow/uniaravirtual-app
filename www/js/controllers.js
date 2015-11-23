@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicHistory, $localstorage, $ionicModal, $state, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -9,6 +9,15 @@ angular.module('starter.controllers', [])
   // $scope.$on('$ionicView.enter', function(e) {
   // });
 
+  $scope.logout = function() {
+    $localstorage.remove('token');
+    $localstorage.remove('grades');
+    $localstorage.remove('profile');
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+    $state.go("app.login");
+  }
 })
 
 .controller('GradesCtrl', function($scope, $localstorage, $state) {
