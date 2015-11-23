@@ -87,7 +87,7 @@ angular.module('starter.controllers', [])
         }
 
         for (var idx in grades) {
-          var grade = resp.data[idx];
+          var grade = grades[idx];
           grade.id = idx;
           $localstorage.setObject('grades-' + grade.id, grade);
         }
