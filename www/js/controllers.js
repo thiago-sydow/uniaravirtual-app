@@ -60,7 +60,7 @@ angular.module('starter.controllers', [])
 
     //TODO we will refactor to move all this token check to a specific method.. wait for it.....
     if ($localstorage.getObject('token').expires > Date.now()) {
-      if ($localstorage.getObject('profile') == undefined) {
+      if ($localstorage.get('profile') == undefined) {
         $http.get('https://uniara-virtual-api.herokuapp.com/student', { headers: { 'Authorization': $localstorage.getObject('token').value } }).then(function(resp) {
           $localstorage.setObject('profile', resp.data);
         });
