@@ -77,13 +77,16 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('LoginCtrl', function($scope, $http, $localstorage, $state, $ionicLoading){
+.controller('LoginCtrl', function($scope, $http, $localstorage, $state, $ionicHistory, $ionicLoading){
 
   // Form data for the login modal
   $scope.loginData = {};
 
   $scope.$on('$ionicView.enter', function(e) {
     if ($localstorage.get('token') !== undefined) {
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
       $state.go("app.home");
     }
   });
@@ -121,6 +124,9 @@ angular.module('starter.controllers', [])
 
         $ionicLoading.hide();
 
+        $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
         $state.go("app.home");
       }, function(err) {
         $ionicLoading.hide();
