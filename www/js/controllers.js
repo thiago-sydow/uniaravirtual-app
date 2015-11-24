@@ -10,9 +10,7 @@ angular.module('starter.controllers', [])
   // });
 
   $scope.logout = function() {
-    $localstorage.remove('token');
-    $localstorage.remove('grades');
-    $localstorage.remove('profile');
+    $localstorage.clear();
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
