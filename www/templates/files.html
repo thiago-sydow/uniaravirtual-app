@@ -1,0 +1,14 @@
+<ion-view view-title="Arquivos" hide-back-button="true">
+  <ion-content>
+    <ion-list>
+      <div ng-repeat="(idx, file) in files">
+        <ion-item class="item-stable" ng-click="toggleFile(idx)" ng-class="{active: isFileShown(idx)}">
+          <i class="icon" ng-class="isFileShown(idx) ? 'ion-minus' : 'ion-plus'"> {{file.grade}}</i>
+        </ion-item>
+        <ion-item class="item-accordion" ng-repeat="item in file.files" ng-show="isFileShown(idx)" ng-click="alreadyDownloaded(item.name) ? openFile(item.name) : downloadFile(item.link, item.name)">
+          {{item.name}}
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>

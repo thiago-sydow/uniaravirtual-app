@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ionic.utils'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ionic.utils', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -19,7 +19,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.utils'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
   });
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -58,6 +60,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.utils'])
       'menuContent': {
         templateUrl: 'templates/grade.html',
         controller: 'GradeCtrl'
+      }
+    }
+  })
+
+  .state('app.files', {
+    url: '/files',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/files.html',
+        controller: 'FilesCtrl'
+      }
+    }
+  })
+
+  .state('app.home', {
+    url: '/home/',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/home.html',
+        controller: 'HomeCtrl'
       }
     }
   });

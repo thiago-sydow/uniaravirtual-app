@@ -16,8 +16,20 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
+  </feature>
+  <feature name="File">
+      <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+      <param name="onload" value="true" />
+  </feature>
+  <feature name="FileTransfer">
+      <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+  </feature>
+  <preference name="AndroidPersistentFileLocation" value="Internal" />
+  <feature name="FileOpener2">
+      <param name="android-package" value="io.github.pwlin.cordova.plugins.fileopener2.FileOpener2" />
   </feature>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>

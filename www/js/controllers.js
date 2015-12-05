@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
     if ($localstorage.getObject('token').expires > Date.now()) {
       $scope.grades = $localstorage.getObject('grades');
     } else {
-      $localstorage.remove('token');
+      $localstorage.clear();
       alert('Sua sessão expirou. Por favor faça login novamente.');
       $state.go("app.login");
     }
@@ -34,6 +34,85 @@ angular.module('starter.controllers', [])
 
 })
 
+.controller('FilesCtrl', function($scope, $localstorage, $state, $http, $timeout, $cordovaFile, $cordovaFileTransfer, $cordovaFileOpener2) {
+
+  $scope.$on('$ionicView.enter', function(e) {
+    if ($localstorage.getObject('token').expires > Date.now()) {
+      //if ($localstorage.get('files') == undefined) {
+        $http.get('https://uniara-virtual-api.herokuapp.com/files', { headers: { 'Authorization': $localstorage.getObject('token').value } }).then(function(resp) {
+          $localstorage.setObject('files', resp.data);
+          $scope.files = resp.data;
+        });
+      //}
+      $scope.files = $localstorage.getObject('files');
+    } else {
+      $localstorage.clear();
+      alert('Sua sessão expirou. Por favor faça login novamente.');
+      $state.go("app.login");
+    }
+  });
+
+  $scope.toggleFile = function(file) {
+    $scope.shownFile = $scope.isFileShown(file) ? null : file;
+  };
+
+  $scope.isFileShown = function(file) {
+    return $scope.shownFile === file;
+  };
+
+  $scope.alreadyDownloaded = function(fileName) {
+    var folder = ionic.Platform.isAndroid() ? 'file:///sdcard/Download/' : $cordovaFile.documentsDirectory;
+    $cordovaFile.checkFile(folder, fileName)
+    .then(function (success) {
+      return true;
+    }, function (error) {
+      return false;
+    });
+  };
+
+  $scope.openFile = function(fileName) {
+    var folder = ionic.Platform.isAndroid() ? '/sdcard/Download/' : $cordovaFile.documentsDirectory;
+    var targetPath =  folder + fileName;
+    $cordovaFileOpener2.open(
+      targetPath,
+      'application/pdf'
+    ).then(function() {
+        // Success!
+    }, function(err) {
+        // An error occurred. Show a message to the user
+    });
+  };
+
+  $scope.downloadFile = function(link, fileName) {
+    var url = "https://uniara-virtual-api.herokuapp.com" + link;
+    var folder = ionic.Platform.isAndroid() ? '/sdcard/Download/' : $cordovaFile.documentsDirectory;
+    var targetPath =  folder + fileName;
+    var trustHosts = true;
+    var options = {
+      headers: {Authorization: $localstorage.getObject('token').value}
+    };
+
+    $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+      .then(function(result) {
+        $cordovaFileOpener2.open(
+          targetPath,
+          'application/pdf'
+        ).then(function() {
+            // Success!
+        }, function(err) {
+            // An error occurred. Show a message to the user
+        });
+      }, function(error) {
+        // Error
+        alert(JSON.stringify(error));
+      }, function (progress) {
+        $timeout(function () {
+          $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+        })
+      });
+  };
+
+})
 
 .controller('GradeCtrl', function($scope, $stateParams, $localstorage) {
   $scope.$on('$ionicView.enter', function(e) {
@@ -75,8 +154,7 @@ angular.module('starter.controllers', [])
       }
       $scope.profile = $localstorage.getObject('profile');
     } else {
-      $localstorage.remove('token');
-      $localstorage.remove('profile');
+      $localstorage.clear();
       alert('Sua sessão expirou. Por favor faça login novamente.');
       $state.go("app.login");
     }
@@ -116,8 +194,7 @@ angular.module('starter.controllers', [])
         var grades = resp.data;
 
         if (grades.length == 0){ //TODO fix when response is 401 instead empty response
-          $localstorage.remove('token');
-          $localstorage.remove('profile');
+          $localstorage.clear();
           alert('Sua sessão expirou. Por favor faça login novamente.');
           $state.go("app.login");
         }

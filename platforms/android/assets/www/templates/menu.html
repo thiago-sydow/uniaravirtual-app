@@ -2,6 +2,7 @@
   <ion-side-menu-content>
     <ion-nav-bar class="bar-stable">
       <ion-nav-back-button>
+        Voltar
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left">
@@ -18,11 +19,17 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/app/login">
-          Login
+        <ion-item menu-close href="#/app/home">
+          Início
         </ion-item>
         <ion-item menu-close href="#/app/grades">
           Matérias
+        </ion-item>
+        <ion-item menu-close href="#/app/files">
+          Arquivos
+        </ion-item>
+        <ion-item menu-close ng-click="logout()">
+          Sair
         </ion-item>
       </ion-list>
     </ion-content>
